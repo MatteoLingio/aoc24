@@ -38,6 +38,4 @@ end
 
 main = Main.new("day1.txt")
 puts main.run_pt_1
-
-main = Main.new("day1.txt")
 puts main.run_pt_2
