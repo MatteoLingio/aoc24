@@ -10,21 +10,18 @@ class Main
   end
 
   def run_pt_2
-    @input
-      .each
-      .with_index
-      .reduce(0) do |counter, (report, report_idx)|
-        report = report.split(" ")
-        is_safe =
-          safe?(report) ||
-            report.each_with_index.any? do |level, index|
-              new_report = report.dup
-              new_report.delete_at(index)
-              safe?(new_report)
-            end
+    @input.reduce(0) do |counter, report|
+      report = report.split(" ")
+      is_safe =
+        safe?(report) ||
+          report.each_with_index.any? do |level, index|
+            new_report = report.dup
+            new_report.delete_at(index)
+            safe?(new_report)
+          end
 
-        is_safe ? counter + 1 : counter
-      end
+      is_safe ? counter + 1 : counter
+    end
   end
 
   def safe?(report)
