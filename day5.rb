@@ -9,8 +9,6 @@ class Main
       acc
     end
 
-    p @orders_map
-
     @unordered_list = []
   end
 
@@ -34,26 +32,15 @@ class Main
 
   def run_pt_two
     @unordered_list.reduce(0) do |acc, update_idx|
-      splitted_update = @updates[update_idx].split(",")
-      n = splitted_update.length
-      sorted = false
-      until sorted
-        sorted = true
-        (n-1).times do |j|
-          if !@orders_map[splitted_update[j]] || !@orders_map[splitted_update[j]].include?(splitted_update[j+1])
-            splitted_update[j], splitted_update[j+1] = splitted_update[j+1], splitted_update[j]
-            sorted = false
-          end
-        end
+      splitted_update = @updates[update_idx].split(",").sort! do |a, b|
+        @orders_map[a] && @orders_map[a].include?(b) ? -1 : 1
       end
 
-      middle_of_update = splitted_update[n / 2].to_i
-
-      acc += middle_of_update
+      acc += splitted_update[splitted_update.length / 2].to_i
     end
   end
 end
 
 main = Main.new("day5_orders.txt", "day5_updates.txt")
 main.run_pt_one
-p main.run_pt_two
+main.run_pt_two
