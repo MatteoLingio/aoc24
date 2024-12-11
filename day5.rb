@@ -15,18 +15,12 @@ class Main
   def run_pt_one
     @updates.each.with_index.reduce(0) do |acc, (update, row)|
       splitted_update = update.split(",")
-      ordered = true
-      splitted_update.each_with_index do |char, index|
-        if index > 0
-          if !@orders_map[splitted_update[index - 1]] || !@orders_map[splitted_update[index - 1]].include?(char)
-            @unordered_list << row
-            ordered = false
-            break
-          end
-        end
+
+      next acc if splitted_update.each_cons(2).any? do |chars|
+        !@orders_map[chars[0]] || !@orders_map[chars[0]].include?(chars[1])
       end
 
-      ordered ? acc += splitted_update[splitted_update.length / 2].to_i : acc
+      acc += splitted_update[splitted_update.length / 2].to_i
     end
   end
 
@@ -43,4 +37,4 @@ end
 
 main = Main.new("day5_orders.txt", "day5_updates.txt")
 main.run_pt_one
-main.run_pt_two
+p main.run_pt_two
