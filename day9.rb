@@ -5,43 +5,34 @@ class Main
 
   def run_pt_one
     blocks = []
-    char_count = 0
     @disk_map.each_with_index do |char, index|
       if index % 2 == 0
-        (0...char.to_i).each do |i|
-          char_count += 1
-          blocks << (index / 2).to_s
-        end
+        char.to_i.times { |i| blocks << (index / 2).to_s }
       else
-        (0...char.to_i).each { |i| blocks << "." }
+        char.to_i.times { |i| blocks << "." }
       end
     end
 
-    p "here"
-
-    i = 0
-    j = blocks.length - 1
-    while i < j
-      if blocks[i] == "." && blocks[j] != "."
-        blocks[i] = blocks[j]
-        blocks[j] = "."
-        i += 1
-        j -= 1
+    left = 0
+    right = blocks.length - 1
+    while left < right
+      if blocks[left] == "." && blocks[right] != "."
+        blocks[left], blocks[right] = blocks[right], blocks[left]
+        left += 1
+        right -= 1
       else
-        i += 1 if blocks[i] != "."
-        j -= 1 if blocks[j] == "."
+        left += 1 if blocks[left] != "."
+        right -= 1 if blocks[right] == "."
       end
     end
 
-      first_sequence = []
-      blocks.each do |char|
-        break if char == "."
-        first_sequence << char
-      end
+    first_sequence = []
+    blocks.each do |char|
+      break if char == "."
+      first_sequence << char
+    end
 
-      first_sequence.each_with_index.sum do |num, index|
-        num.to_i * index
-      end
+    first_sequence.each_with_index.sum { |num, index| num.to_i * index }
   end
 
   def run_pt_two
